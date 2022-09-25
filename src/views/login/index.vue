@@ -1,16 +1,16 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" class="login-form" auto-complete="on" label-position="left">
+    <el-form ref="loginForm" class="login-form" auto-complete="on" label-position="left" :model="loginForm" :rules="rules">
       <div class="title-container">
         <h3 class="title">
           <img src="@/assets/common/login-logo.png" alt="">
         </h3>
       </div>
-      <el-form-item>
+      <el-form-item prop="mobile">
         <span class="svg-container el-icon-user-solid" />
-        <el-input />
+        <el-input v-model="loginForm.mobile" />
       </el-form-item>
-      <el-form-item>
+      <el-form-item prop="password">
         <!-- <span class="svg-container el-icon-user-solid" /> -->
         <span class="svg-container">
           <svg-icon icon-class="password" />
@@ -22,7 +22,7 @@
         <!-- <span class="svg-container el-icon-user-solid" /> -->
       </el-form-item>
 
-      <el-button class="loginBtn">登录</el-button>
+      <el-button :loading="loading" class="loginBtn" @click="login">登录</el-button>
       <div class="tips">
         <span style="margin-right:20px;">账号: 13800000002</span>
         <span> 密码: 123456</span>
@@ -39,18 +39,43 @@
   实现密码盒子的切换
   1. 点击闭上眼睛的图片 ==》 睁开 type text 图片变成睁开 眼睛
   2. 图片睁开眼睛 ==》 闭上 type password 图片变成上 眼睛
+
+  手机号 必填 格式 按照国家要求来
+  密码 必填 程度6，16
    -->
 </template>
 <script>
+import { validPhone } from '@/utils/validate'
+
 export default {
   name: 'Login',
   data() {
+    const phoneValid = (rule, value, callback) => {
+      if (!validPhone(value)) {
+        // 没通过
+        callback(new Error('格式错误'))
+      } else {
+        callback()
+      }
+    }
     return {
       passwordType: 'password',
       loginForm: {
-        mobile: '',
-        password: ''
-      }
+        mobile: '13800000002',
+        password: '123456'
+      },
+      rules: {
+        mobile: [
+          { required: true, message: '手机号必填', trigger: 'blur' },
+          { validator: phoneValid, trigger: 'blur' }
+          // { pattern: /^(?:(?:\+|00)86)?1(?:(?:3[\d])|(?:4[5-79])|(?:5[0-35-9])|(?:6[5-7])|(?:7[0-8])|(?:8[\d])|(?:9[189]))\d{8}$/, message: '手机号格式不对', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '密码必填', trigger: 'blur' },
+          { min: 6, max: 16, message: '密码格式不对', trigger: 'blur' }
+        ]
+      },
+      loading: false
     }
   },
   methods: {
@@ -59,6 +84,16 @@ export default {
       this.$nextTick(() => {
         this.$refs.pwd.focus()
       })
+    },
+    async login() {
+      try {
+        await this.$refs.loginForm.validate()
+        this.loading = true
+        await this.$store.dispatch('user/loginAction', this.loginForm)
+        // 接口请求
+      } finally {
+        this.loading = false
+      }
     }
   }
 }
@@ -68,7 +103,7 @@ export default {
 /* 修复input 背景不协调 和光标变色 */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
-$bg:#283443;
+$bg:#d4e3ff;
 $light_gray:#68b0fe;
 $cursor: #fff;
 
