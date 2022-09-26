@@ -10,6 +10,10 @@ export function getUserInfo() {
     method: 'post'
   })
 }
+export const getUserDetailById = (id) => request({
+  url: `/sys/user/${id}`,
+  method: 'get'
+})
 
 export function logout() {
 }
