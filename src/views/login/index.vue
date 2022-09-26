@@ -91,6 +91,7 @@ export default {
         this.loading = true
         await this.$store.dispatch('user/loginAction', this.loginForm)
         // 接口请求
+        this.$router.push('/')
       } finally {
         this.loading = false
       }
