@@ -13,12 +13,12 @@ const req = require.context('./svg', false, /\.svg$/)
 // req()
 
 // const requireAll = requireContext => requireContext.keys().map(requireContext)
-const requireAll = requireContext => requireContext.keys().map((val) => { 
+const requireAll = requireContext => requireContext.keys().map((val) => {
   return requireContext(val)
 })
 // map 返回一个新数组
 // 长度和原来的一样
 // 映射
 // ['./dashboard.svg'].map(requireContext) // []
-requireAll(req);
-console.log(requireAll(req));
+requireAll(req)
+console.log(requireAll(req))
