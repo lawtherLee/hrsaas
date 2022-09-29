@@ -35,11 +35,11 @@ export default {
   },
 
   mounted() {
-    this.getgetDepartments()
+    this.getDepartments(111111222)
   },
 
   methods: {
-    async getgetDepartments() {
+    async getDepartments() {
       await getDepartmentsAPI()
     }
   }
@@ -52,7 +52,7 @@ export default {
   margin: 20px auto;
 
   .el-card__body {
-    padding-right: 0px !important;
+    padding-right: 0 !important;
   }
 }
 </style>
