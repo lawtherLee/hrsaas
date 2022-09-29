@@ -35,7 +35,7 @@ export default {
   },
 
   mounted() {
-    this.getDepartments(111111222)
+    this.getDepartments()
   },
 
   methods: {
@@ -52,7 +52,7 @@ export default {
   margin: 20px auto;
 
   .el-card__body {
-    padding-right: 0 !important;
+    padding-right: 0px !important;
   }
 }
 </style>
