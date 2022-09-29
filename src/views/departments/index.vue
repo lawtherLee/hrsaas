@@ -35,11 +35,11 @@ export default {
   },
 
   mounted() {
-    this.getgetDepartments()
+    this.getDepartments()
   },
 
   methods: {
-    async getgetDepartments() {
+    async getDepartments() {
       await getDepartmentsAPI()
     }
   }
