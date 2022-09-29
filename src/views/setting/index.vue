@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-card>
       <el-tabs v-model="activeName">
-        <el-tab-pane label="角色管理" name="first">
+        <el-tab-pane label="角色管理asdasdasda" name="first">
           <el-row>
             <el-button type="primary" style="margin-left:10px;" size="small" icon="el-icon-plus" @click="addRole">新增角色</el-button>
           </el-row>
