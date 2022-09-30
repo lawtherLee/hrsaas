@@ -15,6 +15,7 @@
 <script>
 import { getDepartmentsAPI } from '@/api'
 import treeTools from './components/tree-tools.vue'
+import { tranListToTreeData } from '@/utils'
 
 export default {
   name: 'HrsaasIndex',
@@ -30,7 +31,8 @@ export default {
       defaultProps: {
         label: 'name'
       },
-      company: { name: '江苏传智播客教育科技股份有限公司', manager: '负责人' }
+      company: { name: '江苏传技股份有限公司', manager: '负责人' },
+      depts: []
     }
   },
 
@@ -40,7 +42,9 @@ export default {
 
   methods: {
     async getDepartments() {
-      await getDepartmentsAPI()
+      const { depts, companyManage, companyName } = await getDepartmentsAPI()
+      this.departs = tranListToTreeData(depts, '')
+      this.company = { name: companyName, manager: companyManage }
     }
   }
 }
