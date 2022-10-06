@@ -8,3 +8,11 @@ export function getDepartmentsAPI() {
     url: '/company/department'
   })
 }
+
+export function addDepartmentsAPI(data) {
+  return request({
+    url: '/company/department',
+    method: 'POST',
+    data
+  })
+}
