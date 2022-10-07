@@ -1,11 +1,18 @@
 <template>
-  <div class="departments-container">
+  <div v-loading="loading" class="departments-container">
     <el-card>
       <treeTools :is-root="false" :tree-node="company" />
     </el-card>
     <el-tree :data="departs" :default-expand-all="true" :props="defaultProps">
-      <treeTools slot-scope="{data}" :tree-node="data" />
+      <treeTools
+        slot-scope="{data}"
+        :tree-node="data"
+        @addDept="handleAddDept"
+        @editDept="editDept"
+        @refreshList="getDepartments"
+      />
     </el-tree>
+    <add-dept ref="addDept" :dialog-visible.sync="dialogVisible" :tree-node="currentNode" />
   </div>
   <!-- // 1.组件抽取
   // 2.子组件 props 定义
@@ -16,23 +23,26 @@
 import { getDepartmentsAPI } from '@/api'
 import treeTools from './components/tree-tools.vue'
 import { tranListToTreeData } from '@/utils'
+import addDept from '@/views/departments/components/add-dept'
 
 export default {
   name: 'HrsaasIndex',
   components: {
-    treeTools
+    treeTools,
+    addDept
   },
 
   data() {
     return {
-      departs: [{ name: '总裁办', manager: '曹操', children: [{ name: '董事会', manager: '曹丕' }] },
-        { name: '行政部', manager: '刘备' },
-        { name: '人事部', manager: '孙权' }],
+      departs: [],
       defaultProps: {
         label: 'name'
       },
-      company: { name: '江苏传技股份有限公司', manager: '负责人' },
-      depts: []
+      company: { name: '江苏传技股份有限公司', manager: '负责人', id: '' },
+      depts: [],
+      dialogVisible: false,
+      currentNode: {},
+      loading: false
     }
   },
 
@@ -42,9 +52,23 @@ export default {
 
   methods: {
     async getDepartments() {
-      const { depts, companyManage, companyName } = await getDepartmentsAPI()
-      this.departs = tranListToTreeData(depts, '')
-      this.company = { name: companyName, manager: companyManage }
+      try {
+        this.loading = true
+        const { depts, companyManage, companyName } = await getDepartmentsAPI()
+        this.departs = tranListToTreeData(depts, '')
+        this.company = { name: companyName, manager: companyManage }
+      } finally {
+        this.loading = false
+      }
+    },
+    handleAddDept(node) {
+      this.dialogVisible = true
+      this.currentNode = node
+    },
+    editDept(node) {
+      this.dialogVisible = true
+      this.currentNode = { ...node }
+      this.$refs.addDept.formData = { ...node }
     }
   }
 }
