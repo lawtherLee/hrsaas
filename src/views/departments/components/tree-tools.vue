@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { delDepartmentsAPI } from '@/api'
+
 export default {
   name: 'HrsaasTreeTools',
   props: {
@@ -47,9 +49,18 @@ export default {
       if (type === 'add') {
         this.$emit('addDept', this.treeNode)
       } else if (type === 'edit') {
-
+        this.$emit('editDept', this.treeNode)
       } else {
-
+        // 二次确认
+        this.$confirm('是否确认删除该部门', '提示', {
+          type: 'warning'
+        }).then(res => {
+          return delDepartmentsAPI(this.treeNode.id)
+        }).then(res => {
+          this.$message.success('删除成功')
+          // 父组件 getDepartments
+          this.$emit('refreshList')
+        })
       }
     }
   }

@@ -16,3 +16,18 @@ export function addDepartmentsAPI(data) {
     data
   })
 }
+
+export function updateDepartmentsAPI(data) {
+  return request({
+    url: `/company/department/${data.id}`,
+    method: 'PUT',
+    data
+  })
+}
+
+export function delDepartmentsAPI(id) {
+  return request({
+    url: `/company/department/${id}`,
+    method: 'delete'
+  })
+}
