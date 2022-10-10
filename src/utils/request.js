@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 import store from '@/store'
 import router from '@/router'
+
 const TimeOut = 3600 // s
 // 对比时间是否超时
 function IsCheckTimeOut() {
@@ -10,6 +11,7 @@ function IsCheckTimeOut() {
   const timeStamp = (currentTime - store.getters.hrsaasTime) / 1000
   return timeStamp > TimeOut // true 超时 / false
 }
+
 // 通过axiso 创建 axios 实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // 基准地址 /prod-api

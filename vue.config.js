@@ -37,6 +37,7 @@ module.exports = {
     },
     proxy: {
       '/api': {
+        // target: 'http://ihrm.itheima.net/',
         target: 'http://ihrm-java.itheima.net/',
         changeOrigin: true
       }
@@ -92,7 +93,7 @@ module.exports = {
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
             .use('script-ext-html-webpack-plugin', [{
-            // `runtime` must same as runtimeChunk name. default is `runtime`
+              // `runtime` must same as runtimeChunk name. default is `runtime`
               inline: /runtime\..*\.js$/
             }])
             .end()
