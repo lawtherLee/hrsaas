@@ -6,7 +6,7 @@
       </template>
       <template #after>
         <el-button size="small" type="warning" @click="$router.push('/import')">导入</el-button>
-        <el-button size="small" type="danger">导出</el-button>
+        <el-button size="small" type="danger" @click="exportExcel">导出</el-button>
         <el-button size="small" type="primary" @click="handleEmploy">新增员工</el-button>
       </template>
     </PageTool>
@@ -74,6 +74,7 @@ import PageTool from '@/components/PageTool'
 import EnumHireType from '@/api/constant/employees'
 import { delEmployeeAPI, getEmployeeListAPI } from '@/api/employees'
 import addEmployee from './components/add-employee.vue'
+import { export_json_to_excel } from '@/vendor/Export2Excel'
 
 export default {
   name: 'HrsaasIndex',
@@ -129,6 +130,41 @@ export default {
       } catch (e) {
         console.log(e)
       }
+    },
+    // 导出
+    async exportExcel() {
+      // 文件懒加载
+      const { export_json_to_excel } = await import('@/vendor/Export2Excel')
+      const { rows } = await getEmployeeListAPI({ page: 1, size: this.total })
+      console.log(rows)
+      const exportExcelMapPath = {
+        '手机号': 'mobile',
+        '姓名': 'username',
+        '入职日期': 'timeOfEntry',
+        '聘用形式': 'formOfEmployment',
+        '转正日期': 'correctionTime',
+        '工号': 'workNumber',
+        '部门': 'departmentName'
+      }
+      const header = Object.keys(exportExcelMapPath)
+      const data = rows.map(item => {
+        return header.map(h => {
+          if (h === '聘用形式') {
+            const find = this.hireType.find(hire => {
+              return hire.id === item[exportExcelMapPath[h]]
+            })
+            return find ? find.value : '未知'
+          }
+          return item[exportExcelMapPath[h]]
+        })
+      })
+      export_json_to_excel({
+        header, // 表头 必填
+        data, // 具体数据 必填
+        filename: '黑马员工列表', // 非必填
+        autoWidth: true, // 宽度自适应
+        bookType: 'xlsx' // 文件类型
+      })
     }
   }
 }
