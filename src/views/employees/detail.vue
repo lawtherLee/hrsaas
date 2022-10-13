@@ -68,6 +68,7 @@ export default {
         this.$message.success('更新成功')
       } catch (e) {
         console.log(e)
+        console.log(1)
       }
     },
     tabClick() {
