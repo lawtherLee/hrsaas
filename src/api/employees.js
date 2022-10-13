@@ -51,3 +51,51 @@ export function importEmployeeAPI(data) {
     data
   })
 }
+
+/**
+ * 获取员工信息
+ * @param id
+ * @returns {*}
+ */
+export const getEmployeesInfoAPI = id => {
+  return request({
+    url: `/employees/${id}/personalInfo`
+  })
+}
+
+/**
+ * 保存员工基本信息
+ * @param data
+ * @returns {*}
+ */
+export const saveEmployeesInfoAPI = data => {
+  return request({
+    url: `/employees/${data.userId}/personalInfo`,
+    method: 'PUT',
+    data
+  })
+}
+
+/**
+ * 获取员工岗位信息
+ * @param id 员工id
+ * @returns {Promise}
+ */
+export const getEmployeesJobInfoAPI = id => {
+  return request({
+    url: `/employees/${id}/jobs`
+  })
+}
+
+/**
+ * 保存岗位信息
+ * @param data
+ * @returns {*}
+ */
+export const saveEmployeesJobInfoAPI = data => {
+  return request({
+    url: `/employees/${data.userId}/jobs`,
+    method: 'PUT',
+    data
+  })
+}

@@ -39,7 +39,7 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="280">
           <template slot-scope="{row}">
-            <el-button size="small" type="text">查看</el-button>
+            <el-button size="small" type="text" @click="goDetail(row)">查看</el-button>
             <el-button size="small" type="text">转正</el-button>
             <el-button size="small" type="text">调岗</el-button>
             <el-button size="small" type="text">离职</el-button>
@@ -74,7 +74,7 @@ import PageTool from '@/components/PageTool'
 import EnumHireType from '@/api/constant/employees'
 import { delEmployeeAPI, getEmployeeListAPI } from '@/api/employees'
 import addEmployee from './components/add-employee.vue'
-import { export_json_to_excel } from '@/vendor/Export2Excel'
+// import { export_json_to_excel } from '@/vendor/Export2Excel'
 
 export default {
   name: 'HrsaasIndex',
@@ -165,6 +165,9 @@ export default {
         autoWidth: true, // 宽度自适应
         bookType: 'xlsx' // 文件类型
       })
+    },
+    goDetail(row) {
+      this.$router.push('/employees/detail/' + row.id)
     }
   }
 }
