@@ -1,36 +1,11 @@
 <template>
-  <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
-    <svg-icon icon-class="eye-open" />
-    <upload-excel />
-  </div>
+  <div />
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
-export default {
-  name: 'Dashboard',
-  components: {},
-
-  computed: {
-    ...mapGetters([
-      'name'
-    ])
-  },
-  methods: {}
-}
+export default {}
 </script>
 
-<style lang="scss" scoped>
-.dashboard {
-  &-container {
-    margin: 30px;
-  }
+<style scoped>
 
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
-}
 </style>

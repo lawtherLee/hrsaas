@@ -1,28 +1,28 @@
 <template>
   <el-dialog
-    :title="title"
-    width="50%"
-    :visible.sync="dialogVisible"
     :before-close="handleClose"
+    :title="title"
+    :visible="dialogVisible"
+    width="50%"
   >
     <el-form
       ref="roleDialogForm"
-      label-width="80px"
       :model="formData"
+      label-width="80px"
     >
       <el-form-item
-        prop="name"
-        label="角色"
         :rules="[{
           required: true, message: '角色必填',trigger:'blur'}]"
+        label="角色"
+        prop="name"
       >
         <el-input v-model="formData.name" />
       </el-form-item>
       <el-form-item label="描述" prop="description">
-        <el-input v-model="formData.description" type="textarea" row="3" />
+        <el-input v-model="formData.description" row="3" type="textarea" />
       </el-form-item>
     </el-form>
-    <el-row slot="footer" type="flex" justify="center" align="middle" class="dialog-footer">
+    <el-row slot="footer" align="middle" class="dialog-footer" justify="center" type="flex">
       <el-button @click="handleClose">取 消</el-button>
       <el-button v-loading="loading" type="primary" @click="submit">确 定</el-button>
     </el-row>
@@ -31,6 +31,7 @@
 
 <script>
 import { addRole, updateRole } from '@/api/setting'
+
 export default {
   name: 'HrsaasAddRole',
   props: {

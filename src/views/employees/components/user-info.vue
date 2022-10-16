@@ -1,5 +1,6 @@
 <template>
   <div class="user-info">
+    <i class="el-icon-printer" @click="$router.push('/employees/print/' + userId + '?type=personal')" />
     <!-- 个人信息 -->
     <el-form label-width="220px">
       <!-- 工号 入职时间 -->
@@ -58,6 +59,7 @@
         <el-col :span="12">
           <el-form-item label="员工头像">
             <!-- 放置上传图片 -->
+            <upload-img ref="uploadAvatar" :default-url="employeesAvatar" @on-success="uploadAvatarSuccess" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -91,6 +93,7 @@
 
         <el-form-item label="员工照片">
           <!-- 放置上传图片 -->
+          <upload-img ref="employeesPic" :default-url="employeesPic" :on-success="uploadPicSuccess" />
         </el-form-item>
         <el-form-item label="国家/地区">
           <el-select v-model="formData.nationalArea" class="inputW2">
@@ -390,6 +393,8 @@ import EmployeeEnum from '@/api/constant/employees'
 import { getEmployeesInfoAPI, getUserDetailById, saveEmployeesInfoAPI, saveUserDetailByIdAPI } from '@/api'
 
 export default {
+  components: {},
+
   data() {
     return {
       userId: this.$route.params.id,
@@ -457,7 +462,9 @@ export default {
         isThereAnyCompetitionRestriction: '', // 有无竞业限制
         proofOfDepartureOfFormerCompany: '', // 前公司离职证明
         remarks: '' // 备注
-      }
+      },
+      employeesAvatar: '',
+      employeesPic: ''
     }
   },
   created() {
@@ -467,12 +474,19 @@ export default {
   methods: {
     async loadUserInfo() {
       this.userInfo = await getUserDetailById(this.userId)
+      if (this.userInfo.staffPhoto) {
+        this.employeesAvatar = this.userInfo.staffPhoto
+      }
     },
     async loadEmployees() {
       this.formData = await getEmployeesInfoAPI(this.userId)
+      if (this.formData.staffPhoto) {
+        this.employeesPic = this.formData.staffPhoto
+      }
     },
     async saveEmployeesInfo() {
       try {
+        if (this.$refs.employeesPic.loading) return this.$message.error('头像还在上传')
         await saveEmployeesInfoAPI(this.formData)
         this.$message.success('更新成功')
       } catch (e) {
@@ -481,11 +495,19 @@ export default {
     },
     async saveUserInfo() {
       try {
+        if (this.$refs.uploadAvatar.loading) return this.$message.error('头像还在上传')
         await saveUserDetailByIdAPI(this.userInfo)
         this.$message.success('更新成功')
       } catch (e) {
         this.$message.error('更新失败')
       }
+    },
+    // 监听头像上传是否成功
+    uploadAvatarSuccess(data) {
+      this.userInfo.staffPhoto = data.imgUrl
+    },
+    uploadPicSuccess(data) {
+      this.formData.staffPhoto = data.imgUrl
     }
   }
 }

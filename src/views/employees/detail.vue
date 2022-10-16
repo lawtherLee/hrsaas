@@ -17,10 +17,10 @@
               </el-form-item>
             </el-form>
           </el-tab-pane>
-          <el-tab-pane label="配置管理" lazy name="second">
+          <el-tab-pane label="个人信息" lazy name="second">
             <user-info />
           </el-tab-pane>
-          <el-tab-pane label="角色管理" lazy name="third">
+          <el-tab-pane label="岗位信息" lazy name="third">
             <job-info />
           </el-tab-pane>
         </el-tabs>
